@@ -1,4 +1,14 @@
-node_modules
+# Dependency directories
+node_modules/
+
+# Logs
 yarn-error.log
-.DS_Store
+
+# IntelliJ
 .idea
+
+# Generated files
+*.theia
+
+# MacOS
+.DS_Store
