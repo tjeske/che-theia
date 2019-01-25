@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2018 Red Hat, Inc.
+ * Copyright (c) 2019 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -8,8 +8,9 @@
  * SPDX-License-Identifier: EPL-2.0
  **********************************************************************/
 
-import { SshKeyPair } from '../common/ssh-protocol';
-import { SshKeyServiceClient } from './ssh-key-service-client';
+import { IRemoteAPI } from '@eclipse-che/workspace-client';
+import { che as cheApi } from '@eclipse-che/api';
+
 
 /**
  * Simple SSH key pairs manager that performs basic operations like create,
@@ -29,7 +30,7 @@ export interface SshKeyManager {
      *
      * @returns {Promise<SshKeyPair>}
      */
-    generate(service: string, name: string): Promise<SshKeyPair>;
+    generate(service: string, name: string): Promise<cheApi.ssh.SshPair>;
 
     /**
      * Create a specified SSH key pair
@@ -38,7 +39,7 @@ export interface SshKeyManager {
      *
      * @returns {Promise<void>}
      */
-    create(sshKeyPair: SshKeyPair): Promise<void>;
+    create(sshKeyPair: cheApi.ssh.SshPair): Promise<void>;
 
     /**
      * Get all SSH key pairs associated with specified service
@@ -46,9 +47,9 @@ export interface SshKeyManager {
      * @param {string} service the name of the service that is associated with
      * the SSH key pair
      *
-     * @returns {Promise<SshKeyPair[]>}
+     * @returns {Promise<cheApi.ssh.SshPair[]>}
      */
-    getAll(service: string): Promise<SshKeyPair[]>;
+    getAll(service: string): Promise<cheApi.ssh.SshPair[]>;
 
     /**
      * Get an SSH key pair associated with specified service and name
@@ -57,9 +58,9 @@ export interface SshKeyManager {
      * the SSH key pair
      * @param {string} name the identifier of the key pair
      *
-     * @returns {Promise<SshKeyPair>}
+     * @returns {Promise<cheApi.ssh.SshPair>}
      */
-    get(service: string, name: string): Promise<SshKeyPair>;
+    get(service: string, name: string): Promise<cheApi.ssh.SshPair>;
 
     /**
      * Delete an SSH key pair with a specified service and name
@@ -73,22 +74,28 @@ export interface SshKeyManager {
     delete(service: string, name: string): Promise<void>;
 }
 
+export interface CheService {
+    name: string,
+    displayName: string,
+    description: string
+}
+
 /**
  * A remote SSH key paris manager that uses {@link SshKeyServiceClient} for
  * all SHH key related operations.
  */
 export class RemoteSshKeyManager implements SshKeyManager {
 
-    constructor(protected readonly sshKeyServiceClient: SshKeyServiceClient) {
+    constructor(protected readonly sshKeyServiceClient: IRemoteAPI) {
     }
 
     /**
      * @inheritDoc
      */
-    generate(service: string, name: string): Promise<SshKeyPair> {
-        return new Promise<SshKeyPair>((resolve, reject) => {
+    generate(service: string, name: string): Promise<cheApi.ssh.SshPair> {
+        return new Promise<cheApi.ssh.SshPair>((resolve, reject) => {
             this.sshKeyServiceClient
-                .generate(service, name)
+                .generateSshKey(service, name)
                 .then(value => resolve(value))
                 .catch(reason => reject(reason));
         });
@@ -97,10 +104,10 @@ export class RemoteSshKeyManager implements SshKeyManager {
     /**
      * @inheritDoc
      */
-    create(sshKeyPair: SshKeyPair): Promise<void> {
+    create(sshKeyPair: cheApi.ssh.SshPair): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.sshKeyServiceClient
-                .create(sshKeyPair)
+                .createSshKey(sshKeyPair)
                 .then(value => resolve(value))
                 .catch(reason => reject(reason));
         });
@@ -109,10 +116,10 @@ export class RemoteSshKeyManager implements SshKeyManager {
     /**
      * @inheritDoc
      */
-    getAll(service: string): Promise<SshKeyPair[]> {
-        return new Promise<SshKeyPair[]>((resolve, reject) =>
+    getAll(service: string): Promise<cheApi.ssh.SshPair[]> {
+        return new Promise<cheApi.ssh.SshPair[]>((resolve, reject) =>
             this.sshKeyServiceClient
-                .getAll(service)
+                .getAllSshKey(service)
                 .then(value => resolve(value))
                 .catch(reason => reject(reason)));
     }
@@ -120,10 +127,10 @@ export class RemoteSshKeyManager implements SshKeyManager {
     /**
      * @inheritDoc
      */
-    get(service: string, name: string): Promise<SshKeyPair> {
-        return new Promise<SshKeyPair>((resolve, reject) =>
+    get(service: string, name: string): Promise<cheApi.ssh.SshPair> {
+        return new Promise<cheApi.ssh.SshPair>((resolve, reject) =>
             this.sshKeyServiceClient
-                .get(service, name)
+                .getSshKey(service, name)
                 .then(value => resolve(value))
                 .catch(reason => reject(reason)));
     }
@@ -134,7 +141,7 @@ export class RemoteSshKeyManager implements SshKeyManager {
     delete(service: string, name: string): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.sshKeyServiceClient
-                .delete(service, name)
+                .deleteSshKey(service, name)
                 .then(value => resolve(value))
                 .catch(reason => reject(reason)));
     }

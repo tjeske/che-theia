@@ -13,13 +13,19 @@
         {
           "name": "Igor Vinokur",
           "email": "ivinokur@redhat.com"
+        },
+        {
+          "name": "Vitalii Parfonov",
+          "email": "vparfono@redhat.com"
         }
       ],
       "files": [
         "src"
       ],
       "devDependencies": {
-        "@theia/plugin": "0.3.16",
+        "@eclipse-che/api": "^6.16.1",
+        "@eclipse-che/plugin": "^0.0.1-1546977605",
+        "@theia/plugin": "0.3.18",
         "@theia/plugin-packager": "0.0.1-1531753678",
         "rimraf": "2.6.2",
         "typescript-formatter": "7.2.2",

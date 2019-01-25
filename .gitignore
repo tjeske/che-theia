@@ -7,8 +7,12 @@ yarn-error.log
 # IntelliJ
 .idea
 
+# VS Code
+.vscode/*
+
 # Generated files
 *.theia
+
 
 # MacOS
 .DS_Store

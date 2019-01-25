@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2018 Red Hat, Inc.
+ * Copyright (c) 2019 Red Hat, Inc.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,30 +9,25 @@
  **********************************************************************/
 
 import * as theia from '@theia/plugin';
-import { CheService, SshKeyPair } from './common/ssh-protocol';
-import { RemoteSshKeyManager, SshKeyManager } from './node/ssh-key-manager';
-import { WsMasterHttpClient } from './node/ws-master-http-client';
-import { SshKeyServiceClient, SshKeyServiceHttpClient } from './node/ssh-key-service-client';
-import { Command } from '@theia/plugin';
+import { RemoteSshKeyManager, SshKeyManager, CheService } from './node/ssh-key-manager';
+import WorkspaceClient from '@eclipse-che/workspace-client';
+import { che as cheApi } from '@eclipse-che/api';
 
 export async function start() {
-    const cheApi = await theia.env.getEnvVariable('CHE_API');
-    const wsMasterHttpClient: WsMasterHttpClient = new WsMasterHttpClient(cheApi);
-    const sshKeyServiceClient: SshKeyServiceClient = new SshKeyServiceHttpClient(wsMasterHttpClient);
-    const sshKeyManager = new RemoteSshKeyManager(sshKeyServiceClient);
-    const GENERATE: Command = {
+    const sshKeyManager = new RemoteSshKeyManager(WorkspaceClient.getRestApi());
+    const GENERATE: theia.Command = {
         id: 'ssh:generate',
         label: 'SSH: generate key pair...'
     };
-    const CREATE: Command = {
+    const CREATE: theia.Command = {
         id: 'ssh:create',
         label: 'SSH: create key pair...'
     };
-    const DELETE: Command = {
+    const DELETE: theia.Command = {
         id: 'ssh:delete',
         label: 'SSH: delete key pair...'
     };
-    const VIEW: Command = {
+    const VIEW: theia.Command = {
         id: 'ssh:view',
         label: 'SSH: view public key...'
     };
@@ -115,9 +110,9 @@ const createKeyPair = async function(sshkeyManager: SshKeyManager): Promise<void
 
 const deleteKeyPair = async function(sshkeyManager: SshKeyManager): Promise<void> {
     const sshServiceName = await getSshServiceName();
-    const keys: SshKeyPair[] = await sshkeyManager.getAll(sshServiceName);
+    const keys: cheApi.ssh.SshPair[] = await sshkeyManager.getAll(sshServiceName);
     const key = await theia.window.showQuickPick<theia.QuickPickItem>(keys.map(key => {
-        return { label: key.name }
+        return { label: key.name ? key.name : '' }
     }), {});
     const keyName = key ? key.label : '';
     await sshkeyManager
@@ -132,9 +127,9 @@ const deleteKeyPair = async function(sshkeyManager: SshKeyManager): Promise<void
 
 const viewPublicKey = async function(sshkeyManager: SshKeyManager): Promise<void> {
     const sshServiceName = await getSshServiceName();
-    const keys: SshKeyPair[] = await sshkeyManager.getAll(sshServiceName);
+    const keys: cheApi.ssh.SshPair[] = await sshkeyManager.getAll(sshServiceName);
     const key = await theia.window.showQuickPick<theia.QuickPickItem>(keys.map(key => {
-        return { label: key.name }
+        return { label: key.name ? key.name : '' }
     }), {});
     const keyName = key ? key.label : '';
     await sshkeyManager

@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@eclipse-che/api@^6.16.1":
+  version "6.17.1"
+  resolved "https://registry.yarnpkg.com/@eclipse-che/api/-/api-6.17.1.tgz#bae00a5ac60501566759ff07b134867996ce8964"
+  integrity sha512-kXrUsNJWUkoZfw9wOKgtZH8KYntjXqkyIHNduXMyELFizpV8n94PWBvSj6MeyeKqogKO5QmeC5xvFZS5/I1fkg==
+
 "@theia/plugin-packager@0.0.1-1531753678":
   version "0.0.1-1531753678"
   resolved "https://registry.yarnpkg.com/@theia/plugin-packager/-/plugin-packager-0.0.1-1531753678.tgz#7407bdb14e0044164c12fb57db570840f64fd1fa"
@@ -13,9 +18,10 @@
     read-pkg "4.0.1"
     yargs "12.0.1"
 
-"@theia/plugin@0.3.16":
-  version "0.3.16"
-  resolved "https://registry.yarnpkg.com/@theia/plugin/-/plugin-0.3.16.tgz#e07da58609d53059f4cbf236629460f404658096"
+"@theia/plugin@0.3.18":
+  version "0.3.18"
+  resolved "https://registry.yarnpkg.com/@theia/plugin/-/plugin-0.3.18.tgz#fb28b826cf28c48c8ae4515512a60f2f31a6e4c2"
+  integrity sha512-vtQRUNvwMh+J4XXHVvD04FM36cvwOcxiaifCs+m6s61kkbLfpO6Fjfynmpsh66UvtS3/QnAGuGnbmhVpD57NBQ==
 
 "@types/commander@^2.11.0":
   version "2.12.2"
