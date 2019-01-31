@@ -1,0 +1,13 @@
+diff --git a/extensions/typescript-language-features/src/utils/versionProvider.ts b/extensions/typescript-language-features/src/utils/versionProvider.ts
+index eb50009cfd..c3877beb06 100644
+--- a/extensions/typescript-language-features/src/utils/versionProvider.ts
++++ b/extensions/typescript-language-features/src/utils/versionProvider.ts
+@@ -140,7 +140,7 @@ export class TypeScriptVersionProvider {
+ 	public get bundledVersion(): TypeScriptVersion {
+ 		try {
+ 			const { extensionPath } = vscode.extensions.getExtension('vscode.typescript-language-features')!;
+-			const typescriptPath = path.join(extensionPath, '../node_modules/typescript/lib');
++			const typescriptPath = path.join(extensionPath, './node_modules/typescript/lib');
+ 			const bundledVersion = new TypeScriptVersion(typescriptPath, '');
+ 			if (bundledVersion.isValid) {
+ 				return bundledVersion;
