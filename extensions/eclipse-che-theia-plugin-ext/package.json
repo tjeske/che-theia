@@ -13,8 +13,8 @@
         "src"
     ],
     "dependencies": {
-        "@eclipse-che/plugin": "latest",
-        "@eclipse-che/workspace-client": "^0.0.1-1546509769",
+        "@eclipse-che/plugin": "0.0.1-1548959356",
+        "@eclipse-che/workspace-client": "0.0.1-1546509769",
         "@theia/core": "0.3.18",
         "@theia/plugin-ext": "0.3.18"
     },
@@ -25,8 +25,8 @@
         "ts-node": "5.0.1",
         "typescript": "^2.9.2",
         "typescript-formatter": "7.2.2",
-        "webpack": "^4.20.2",
-        "webpack-cli": "^3.1.1"
+        "webpack": "4.20.2",
+        "webpack-cli": "3.1.1"
     },
     "scripts": {
         "prepare": "yarn run clean && yarn run build",
